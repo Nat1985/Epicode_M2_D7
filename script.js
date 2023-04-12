@@ -102,21 +102,21 @@ function formInput() { // Questa è la funzione richiamata dal tasto button dell
   let newDiv; // dichiaro la variabile per ogni nuovo div
   for (i = 0; i < jobsFound.length; i ++) {
     newDiv = document.createElement("div"); // ad ogni ciclo inserisco un nuovo div nella variabile newDiv
-    newDiv.innerText = jobsFound[i].title + jobsFound[i].location;  //aggiungo il testo preso dall'array dei risultati
+    newDiv.innerText = jobsFound[i].title + "\n" + jobsFound[i].location;  // aggiungo il testo preso dall'array dei risultati
     newDivs.push(newDiv); // inserisco ogni nuovo tag div nel nuovo array newDivs
     newDivs[i].classList.add("new-div"); // aggiungo ad ognuno la classe new-div per poterli poi modificare con css
   }
 
   console.log(newDivs); //stampo a video il contenuto del nuovo array come controllo
   
-  
-  /* // creo un ciclo per inserire i div nell'html
-  let resultsDiv = document.getElementById("results"); // il div results creato in precedenza è vuoto
+  // creo un ciclo per inserire i div nell'html:
+  let resultsDiv = document.getElementById("results"); // il div results è creato in precedenza nell'html per ricevere i nuovi div, inizialmente è vuoto
+  let searchTitle = document.createElement("h1");
+  searchTitle.innerText = "Risultati trovati:";
+  resultsDiv.appendChild(searchTitle);
   for (i = 0; i < newDivs.length; i ++) {
-    resultsDiv = resultsDiv.appendChild(newDivs[i]); // appendo ogni div dell'array creato prima
-  } */
-  
-
+    resultsDiv.appendChild(newDivs[i]); // appendo ogni div dell'array creato prima
+  }
 }
 
 function searchJob(what, where) {
