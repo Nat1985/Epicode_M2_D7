@@ -93,6 +93,7 @@ function formInput() { // Questa è la funzione richiamata dal tasto button dell
   let myWhere = document.getElementById("location").value; // variabile che immagazzina il value del secondo text
 
   let jobsFound = (searchJob(myWhat, myWhere)); // invoca la funzione di ricerca passandogli le due variabili precedenti e immagazzina l'array di return
+  let resultsCount = jobsFound.splice(jobsFound.length - 1, 1); // tolgo il valore di count dall'array e lo metto in una variabile a se
   console.log(jobsFound); // lo mostra a video come controllo
 
   // ora abbiamo la lista degli elementi trovati nell'array jobsFound.
@@ -110,15 +111,31 @@ function formInput() { // Questa è la funzione richiamata dal tasto button dell
   console.log(newDivs); //stampo a video il contenuto del nuovo array come controllo
   
   // creo un ciclo per inserire i div nell'html:
+      // ma prima ne creo uno per eliminare gli elementi eventualmente già trovati in precedenza:
+      let newdivClass = document.getElementsByClassName("new-div");
+      let removeCycleNumbers = newdivClass.length;
+      let resultH2 = document.getElementsByTagName("h2");
+      let oldHr = document.getElementsByTagName("hr");
+      for (i = 0; i < removeCycleNumbers; i ++) {
+        newdivClass[0].remove();
+        oldHr[0].remove();
+        if (!resultH2) {
+          resultH2.remove();
+        }
+        //TO FIX: NON SI TOGLIE L'H2
+      }
+  // ora parte il ciclo per inserire i div:
   let resultsDiv = document.getElementById("results"); // il div results è creato in precedenza nell'html per ricevere i nuovi div, inizialmente è vuoto
-  let searchTitle = document.createElement("h1");
-  searchTitle.innerText = "Risultati trovati:";
+  let searchTitle = document.createElement("h2");
+  searchTitle.innerText = "Risultati trovati: (" + resultsCount + ")";
   resultsDiv.appendChild(searchTitle);
   for (i = 0; i < newDivs.length; i ++) {
+    resultsDiv.appendChild(document.createElement("hr")); // inserisco una linea orizzontale divisoria fra un risultato e l'altro (formattata con css)
     resultsDiv.appendChild(newDivs[i]); // appendo ogni div dell'array creato prima
   }
 }
 
+// funzione richiamata dal button dell'html che ricerca i risultati:
 function searchJob(what, where) {
   let lowerWhat = what.toLowerCase();   // In questa variabile raccolgo l'input della posizione lavorativa trasformandolo in minuscolo
   let lowerWhere = where.toLowerCase(); // In questa vatiabile raccolgo l'input della location trasformandolo in minuscolo
@@ -134,6 +151,7 @@ function searchJob(what, where) {
     }
   }
   console.log("Risultati trovati: " + count);   // Mostra il numero di risultati trovati
+  result.push(count); // metto dentro anche il valore di count, per utilizzarlo successivamente (lo toglierò appena la funzione è stata chiamata)
   return result;    // Ritorna l'array contenente tutti i risultati trovati
 
 }
