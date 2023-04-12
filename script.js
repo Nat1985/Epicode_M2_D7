@@ -87,7 +87,7 @@ const jobs = [
 
 
 
-  console.log(searchJob("CUSTOMER", "US"));
+console.log(searchJob("CUSTOMER", "US"));
 
 
 function searchJob(what, where) {
