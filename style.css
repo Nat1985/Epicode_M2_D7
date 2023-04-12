@@ -68,3 +68,7 @@ input[type="button"] {
     width: 100px;
     color: rgb(0, 0, 0);
 }
+
+new-div {
+    color: red;
+}
