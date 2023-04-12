@@ -135,7 +135,7 @@ function formInput() { // Questa è la funzione richiamata dal tasto button dell
   }
 }
 
-// funzione richiamata dal button dell'html che ricerca i risultati:
+// funzione di ricerca dei risultati nell'array fornito (necessita di due parametri):
 function searchJob(what, where) {
   let lowerWhat = what.toLowerCase();   // In questa variabile raccolgo l'input della posizione lavorativa trasformandolo in minuscolo
   let lowerWhere = where.toLowerCase(); // In questa vatiabile raccolgo l'input della location trasformandolo in minuscolo
