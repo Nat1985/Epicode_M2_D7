@@ -87,8 +87,13 @@ const jobs = [
 
 
 
-console.log(searchJob("CUSTOMER", "US"));
 
+function formInput() { // Questa è la funzione richiamata dal tasto button dell'html
+  let myWhat = document.getElementById("title").value; // variabile che immagazzina il value del primo text
+  let myWhere = document.getElementById("location").value; // variabile che immagazzina il value del secondo text
+
+  console.log(searchJob(myWhat, myWhere)); //richiama la funzione searchJob per effettuare la ricerca, passando come argomenti le due variabili precedenti
+}
 
 function searchJob(what, where) {
   let lowerWhat = what.toLowerCase();   // In questa variabile raccolgo l'input della posizione lavorativa trasformandolo in minuscolo
@@ -105,6 +110,6 @@ function searchJob(what, where) {
     }
   }
   console.log("Risultati trovati: " + count);   // Mostra il numero di risultati trovati
-  return result;    // Mostra l'array contenente tutti i risultati trovati
+  return result;    // Ritorna l'array contenente tutti i risultati trovati
 
 }
