@@ -119,9 +119,7 @@ function formInput() { // Questa è la funzione richiamata dal tasto button dell
       for (i = 0; i < removeCycleNumbers; i ++) {
         newdivClass[0].remove();
         oldHr[0].remove();
-        if (!resultH2) {
-          resultH2.remove();
-        }
+        resultH2.remove();
         //TO FIX: NON SI TOGLIE L'H2
       }
   // ora parte il ciclo per inserire i div:
