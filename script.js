@@ -86,15 +86,33 @@ const jobs = [
   ]
 
 
+// funzione di ricerca dei risultati nell'array fornito (necessita di due parametri):
+function searchJob(what, where) {
+  let lowerWhat = what.toLowerCase();   
+  let lowerWhere = where.toLowerCase(); // In queste due variabili raccolgo gli input di lavoro e posizione trasformati in minuscolo
+  let count = 0;    // Creo la variabile che conterà i risultati e la setto a 0
+  let result = [];  // Creo l'array che immagazzinerà i risultati della ricerca
 
+  for (i = 0; i < jobs.length; i ++) {  // Questo ciclo passa tutti gli elementi (cioè gli oggetti formati da title e location) dell'array dato
+    let lowerTitle = jobs[i].title.toLowerCase();
+    let lowerLocation = jobs[i].location.toLowerCase(); // trasformo in minuscolo e immagazzino in due variabili anche ogni risultato trovato
+    if (lowerTitle.includes(lowerWhat) && lowerLocation.includes(lowerWhere)) { // entrambe le parole devono essere contenute
+      count ++; // aumento di 1 il contatore dei risultati trovati
+      result.push(jobs[i]); // aggiungo ogni oggetto trovato all'array che fornirò come risultato
+    }
+  }
+  
+  result.push(count); // metto dentro anche il valore di count nel result, per utilizzarlo successivamente (lo toglierò appena la funzione è stata chiamata)
+  return result;    // Ritorna l'array contenente tutti i risultati trovati (compreso il count come ultimo elemento)
+}
 
-function formInput() { // Questa è la funzione richiamata dal tasto button dell'html
-  let myWhat = document.getElementById("title").value; // variabile che immagazzina il value del primo text
-  let myWhere = document.getElementById("location").value; // variabile che immagazzina il value del secondo text
+function formInput() { // funzione richiamata dal tasto button dell'html
+  let myWhat = document.getElementById("title").value;
+  let myWhere = document.getElementById("location").value; // variabili che immagazzinano le due parole digitate dall'utente
 
-  let jobsFound = (searchJob(myWhat, myWhere)); // invoca la funzione di ricerca passandogli le due variabili precedenti e immagazzina l'array di return
+  let jobsFound = (searchJob(myWhat, myWhere)); // invoca la funzione di ricerca passandogli le due variabili precedenti e ne salva il return
   let resultsCount = jobsFound.splice(jobsFound.length - 1, 1); // tolgo il valore di count dall'array e lo metto in una variabile a se
-  console.log(jobsFound); // lo mostra a video come controllo
+  console.log(jobsFound); // mostro l'array a video come controllo
 
   // ora abbiamo la lista degli elementi trovati nell'array jobsFound.
   // creiamo un elemento div per ogni oggetto presente in jobsFound.
@@ -110,46 +128,26 @@ function formInput() { // Questa è la funzione richiamata dal tasto button dell
 
   console.log(newDivs); //stampo a video il contenuto del nuovo array come controllo
   
-  // creo un ciclo per inserire i div nell'html:
-      // ma prima ne creo uno per eliminare gli elementi eventualmente già trovati in precedenza:
+      // il passo successivo è l'inserimento dei div appena creati nell'html
+      // prima però creo un ciclo per eliminare dall'html i risultati eventualmente già trovati in precedenza:
       let newdivClass = document.getElementsByClassName("new-div");
-      let removeCycleNumbers = newdivClass.length;
-      let resultH2 = document.getElementsByTagName("h2");
       let oldHr = document.getElementsByTagName("hr");
-      for (i = 0; i < removeCycleNumbers; i ++) {
-        newdivClass[0].remove();
-        oldHr[0].remove();
-        resultH2.remove();
-        //TO FIX: NON SI TOGLIE L'H2
+      let resultH2 = document.getElementsByTagName("h2"); // pesco i singoli elementi html dei risultati già trovati
+      for (i = newdivClass.length; i > 0; i --) {
+        newdivClass[i - 1].remove();
+        oldHr[i - 1].remove();
       }
-  // ora parte il ciclo per inserire i div:
+      for (i = resultH2.length; i > 0; i --) { // li cancello con dei cicli
+        resultH2[i - 1].remove();
+      }
+
+  // ora parte il ciclo finale per inserire i div:
   let resultsDiv = document.getElementById("results"); // il div results è creato in precedenza nell'html per ricevere i nuovi div, inizialmente è vuoto
   let searchTitle = document.createElement("h2");
-  searchTitle.innerText = "Risultati trovati: (" + resultsCount + ")";
+  searchTitle.innerText = "Risultati trovati: (" + resultsCount + ")"; //inserisco un h2 col numero dei risultati trovati
   resultsDiv.appendChild(searchTitle);
   for (i = 0; i < newDivs.length; i ++) {
     resultsDiv.appendChild(document.createElement("hr")); // inserisco una linea orizzontale divisoria fra un risultato e l'altro (formattata con css)
-    resultsDiv.appendChild(newDivs[i]); // appendo ogni div dell'array creato prima
+    resultsDiv.appendChild(newDivs[i]); // appendo ogni div dell'array newDivs creato prima
   }
-}
-
-// funzione di ricerca dei risultati nell'array fornito (necessita di due parametri):
-function searchJob(what, where) {
-  let lowerWhat = what.toLowerCase();   // In questa variabile raccolgo l'input della posizione lavorativa trasformandolo in minuscolo
-  let lowerWhere = where.toLowerCase(); // In questa vatiabile raccolgo l'input della location trasformandolo in minuscolo
-  let count = 0;    // Creo la variabile che conterà i risultati e la setto a 0
-  let result = [];  // Creo l'array che immagazzinerà i risultati della ricerca
-
-  for (i = 0; i < jobs.length; i ++) {  // Questo ciclo passa tutti gli elementi (cioè gli oggetti formati da title e location) dell'array dato
-    let lowerTitle = jobs[i].title.toLowerCase();   // creo la variabile che immagazzina il title tutto in minuscolo
-    let lowerLocation = jobs[i].location.toLowerCase(); // // creo la variabile che immagazzina la location tutta in minuscolo
-    if (lowerTitle.includes(lowerWhat) && lowerLocation.includes(lowerWhere)) { // La condizione è che entrambe le parole devono essere contenute all'interno dell'oggetto e non soltanto una
-      count ++; // se la condizione è soddisfatta aumenta di uno il contatore dei risultati, che a fine ciclo indicherà così il numero esatto di elementi trovati
-      result.push(jobs[i]); // aggiungo ogni oggetto trovato all'array che fornirò come risultato
-    }
-  }
-  console.log("Risultati trovati: " + count);   // Mostra il numero di risultati trovati
-  result.push(count); // metto dentro anche il valore di count, per utilizzarlo successivamente (lo toglierò appena la funzione è stata chiamata)
-  return result;    // Ritorna l'array contenente tutti i risultati trovati
-
 }
