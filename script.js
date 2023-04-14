@@ -90,28 +90,24 @@ const jobs = [
 function searchJob(what, where) {
   let lowerWhat = what.toLowerCase();   
   let lowerWhere = where.toLowerCase(); // In queste due variabili raccolgo gli input di lavoro e posizione trasformati in minuscolo
-  let count = 0;    // Creo la variabile che conterà i risultati e la setto a 0
+  
   let result = [];  // Creo l'array che immagazzinerà i risultati della ricerca
 
   for (i = 0; i < jobs.length; i ++) {  // Questo ciclo passa tutti gli elementi (cioè gli oggetti formati da title e location) dell'array dato
     let lowerTitle = jobs[i].title.toLowerCase();
     let lowerLocation = jobs[i].location.toLowerCase(); // trasformo in minuscolo e immagazzino in due variabili anche ogni risultato trovato
     if (lowerTitle.includes(lowerWhat) && lowerLocation.includes(lowerWhere)) { // entrambe le parole devono essere contenute
-      count ++; // aumento di 1 il contatore dei risultati trovati
       result.push(jobs[i]); // aggiungo ogni oggetto trovato all'array che fornirò come risultato
     }
   }
-  
-  result.push(count); // metto dentro anche il valore di count nel result, per utilizzarlo successivamente (lo toglierò appena la funzione è stata chiamata)
   return result;    // Ritorna l'array contenente tutti i risultati trovati (compreso il count come ultimo elemento)
 }
 
 function formInput() { // funzione richiamata dal tasto button dell'html
   let myWhat = document.getElementById("title").value;
   let myWhere = document.getElementById("location").value; // variabili che immagazzinano le due parole digitate dall'utente
-
   let jobsFound = (searchJob(myWhat, myWhere)); // invoca la funzione di ricerca passandogli le due variabili precedenti e ne salva il return
-  let resultsCount = jobsFound.splice(jobsFound.length - 1, 1); // tolgo il valore di count dall'array e lo metto in una variabile a se
+  let resultsCount = jobsFound.length; // Imposto la variabile che immagazzina il numero di risultati trovati
   console.log(jobsFound); // mostro l'array a video come controllo
 
   // ora abbiamo la lista degli elementi trovati nell'array jobsFound.
