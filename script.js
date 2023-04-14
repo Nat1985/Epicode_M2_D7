@@ -88,15 +88,11 @@ const jobs = [
 
 // funzione di ricerca dei risultati nell'array fornito (necessita di due parametri):
 function searchJob(what, where) {
-  let lowerWhat = what.toLowerCase();   
-  let lowerWhere = where.toLowerCase(); // In queste due variabili raccolgo gli input di lavoro e posizione trasformati in minuscolo
-  
+  let lowerWhatWhere = [what.toLowerCase(), where.toLowerCase()]; //raccolto i due input di lavoro e posizione trasformati in minuscolo
   let result = [];  // Creo l'array che immagazzinerà i risultati della ricerca
-
   for (i = 0; i < jobs.length; i ++) {  // Questo ciclo passa tutti gli elementi (cioè gli oggetti formati da title e location) dell'array dato
-    let lowerTitle = jobs[i].title.toLowerCase();
-    let lowerLocation = jobs[i].location.toLowerCase(); // trasformo in minuscolo e immagazzino in due variabili anche ogni risultato trovato
-    if (lowerTitle.includes(lowerWhat) && lowerLocation.includes(lowerWhere)) { // entrambe le parole devono essere contenute
+    let lowerTitleLocation = [jobs[i].title.toLowerCase(), jobs[i].location.toLowerCase()]; // i due valori title e location di ogni ciclo li metto in un array che li immagazzina in minuscolo
+    if (lowerTitleLocation[0].includes(lowerWhatWhere[0]) && lowerTitleLocation[1].includes(lowerWhatWhere[1])) { // entrambe le parole devono essere contenute
       result.push(jobs[i]); // aggiungo ogni oggetto trovato all'array che fornirò come risultato
     }
   }
@@ -104,9 +100,8 @@ function searchJob(what, where) {
 }
 
 function formInput() { // funzione richiamata dal tasto button dell'html
-  let myWhat = document.getElementById("title").value;
-  let myWhere = document.getElementById("location").value; // variabili che immagazzinano le due parole digitate dall'utente
-  let jobsFound = (searchJob(myWhat, myWhere)); // invoca la funzione di ricerca passandogli le due variabili precedenti e ne salva il return
+  let myWhatWhere = [document.getElementById("title").value, document.getElementById("location").value]; // immagazzino le due parole digitate dall'utente
+  let jobsFound = (searchJob(myWhatWhere[0], myWhatWhere[1])); // invoca la funzione di ricerca passandogli le due variabili precedenti e ne salva il return
   let resultsCount = jobsFound.length; // Imposto la variabile che immagazzina il numero di risultati trovati
   console.log(jobsFound); // mostro l'array a video come controllo
 
@@ -121,7 +116,6 @@ function formInput() { // funzione richiamata dal tasto button dell'html
     newDivs.push(newDiv); // inserisco ogni nuovo tag div nel nuovo array newDivs
     newDivs[i].classList.add("new-div"); // aggiungo ad ognuno la classe new-div per poterli poi modificare con css
   }
-
   console.log(newDivs); //stampo a video il contenuto del nuovo array come controllo
   
       // il passo successivo è l'inserimento dei div appena creati nell'html
@@ -129,18 +123,18 @@ function formInput() { // funzione richiamata dal tasto button dell'html
       let newdivClass = document.getElementsByClassName("new-div");
       let oldHr = document.getElementsByTagName("hr");
       let resultH2 = document.getElementsByTagName("h2"); // pesco i singoli elementi html dei risultati già trovati
-      for (i = newdivClass.length; i > 0; i --) {
-        newdivClass[i - 1].remove();
+      for (i = newdivClass.length; i > 0; i --) { // li cancello con dei cicli
+        newdivClass[i - 1].remove();  // questi cicli "girano" con l'indice che decrementa perché eliminano ogni volta un elemento 
         oldHr[i - 1].remove();
       }
-      for (i = resultH2.length; i > 0; i --) { // li cancello con dei cicli
+      for (i = resultH2.length; i > 0; i --) {
         resultH2[i - 1].remove();
       }
 
   // ora parte il ciclo finale per inserire i div:
   let resultsDiv = document.getElementById("results"); // il div results è creato in precedenza nell'html per ricevere i nuovi div, inizialmente è vuoto
   let searchTitle = document.createElement("h2");
-  searchTitle.innerText = "Risultati trovati: (" + resultsCount + ")"; //inserisco un h2 col numero dei risultati trovati
+  searchTitle.innerText = `Risultati trovati: (${resultsCount})`; //inserisco un h2 col numero dei risultati trovati
   resultsDiv.appendChild(searchTitle);
   for (i = 0; i < newDivs.length; i ++) {
     resultsDiv.appendChild(document.createElement("hr")); // inserisco una linea orizzontale divisoria fra un risultato e l'altro (formattata con css)
